@@ -20,10 +20,9 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install system deps
+      - name: Verify AWS CLI
         run: |
-          sudo apt-get update
-          sudo apt-get install -y awscli
+          aws --version
 
       - name: Install Python deps
         run: |
