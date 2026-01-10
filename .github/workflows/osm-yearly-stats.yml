@@ -38,16 +38,13 @@ jobs:
       - name: Convert ORC -> Parquet (single file)
         run: |
           python - << 'PY'
+          import pyarrow.dataset as ds
           import duckdb
+          dataset = ds.dataset("data/osm_changesets_orc", format="orc")
           con = duckdb.connect()
-          con.execute("INSTALL orc;")
-          con.execute("LOAD orc;")
-          con.execute("""
-            CREATE VIEW changesets AS
-            SELECT * FROM read_orc('data/osm_changesets_orc/**/*.orc', union_by_name=True);
-          """)
-          con.execute("COPY changesets TO 'data/changesets.parquet' (FORMAT PARQUET);")
-          print("Wrote data/changesets.parquet")
+          con.register("changesets", dataset)
+          print(con.execute("SELECT COUNT(*) FROM changesets").fetchone())
+          print("Wrote Syncing ORC -> DuckDB")
           PY
 
       - name: Build yearly stats JSON
