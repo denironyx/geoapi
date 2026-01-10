@@ -56,11 +56,17 @@ jobs:
           mkdir -p frontend/src/content
           cp -f data/osm_yearly_stats.json frontend/src/content/osm_stats.json
 
+      - name: Verify outputs exist
+        run: |
+          test -f data/osm_yearly_stats.json
+          test -f frontend/src/content/osm_stats.json
+          test -f data/osm_changesets_summary.json
+
       - name: Commit outputs
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git status
-          git add data/osm_yearly_stats.json frontend/src/content/osm_stats.json data/osm_changesets_summary.json || true
+          git add data/osm_yearly_stats.json data/osm_changesets_summary.json frontend/src/content/osm_stats.json || true
           git commit -m "Update OSM yearly stats" || exit 0
           git push
