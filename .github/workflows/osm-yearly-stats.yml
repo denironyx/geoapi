@@ -27,7 +27,7 @@ jobs:
       - name: Install Python deps
         run: |
           python -m pip install -U pip
-          python -m pip install duckdb pyarrow pandas
+          python -m pip install duckdb pyarrow pandas tzdata argparse time pandas json
 
       - name: Sync ORC from osm-pds
         run: |
