@@ -253,12 +253,19 @@ def main():
 
             logger.debug("Final summary dict created with %d years", len(out))
             json_out = json.dumps(out, indent=2)
+            OUT_PATH.write_text(json_out, encoding="utf-8")
             print(json_out)
             
 
             # Write outputs
             # Atomically write JSON output
-            json_path = Path("osm_changesets_summary.json")
+            json_path = Path("data/osm_changesets_summary.json")
+            json_path.parent.mkdir(parents=True, exist_ok=True)
+            
+            csv_path = Path("data/osm_changesets_summary.csv")
+            csv_path.parent.mkdir(parents=True, exist_ok=True)
+
+
             json_tmp = json_path.with_name(json_path.name + ".tmp")
             with open(json_tmp, "w", encoding="utf-8") as f:
                 f.write(json_out)
