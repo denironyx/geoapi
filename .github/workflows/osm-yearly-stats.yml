@@ -35,7 +35,7 @@ jobs:
           aws s3 sync --no-sign-request s3://osm-pds/changesets/ data/osm_changesets_orc
 
       # Optional but strongly recommended for speed:
-      - name: Convert ORC -> Parquet (single file)
+      - name: Convert ORC -> PyArrow DuckDB (single file)
         run: |
           python - << 'PY'
           import pyarrow.dataset as ds
