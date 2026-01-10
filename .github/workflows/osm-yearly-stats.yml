@@ -55,6 +55,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add site/data/osm_yearly_stats_2004_2026.json data/changesets.parquet || true
+          git add data/osm_changesets_summary.json data/osm_stats.json
           git commit -m "Update OSM yearly stats" || exit 0
           git push
