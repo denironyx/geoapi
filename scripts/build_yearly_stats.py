@@ -21,6 +21,9 @@ if hasattr(duckdb, "__file__") and Path(duckdb.__file__).resolve().parent == Pat
 START_YEAR = 2004
 END_YEAR = 2026
 
+OUT_PATH = Path("data/osm_yearly_stats.json")
+OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+
 logger.debug("Ensuring tzdata is configured before DuckDB/Arrow interactions")
 
 
@@ -251,15 +254,18 @@ def main():
             logger.debug("Final summary dict created with %d years", len(out))
             json_out = json.dumps(out, indent=2)
             print(json_out)
+            
 
             # Write outputs
             # Atomically write JSON output
-            json_tmp = "osm_stats.json"
+            json_path = Path("osm_changesets_summary.json")
+            json_tmp = json_path.with_name(json_path.name + ".tmp")
             with open(json_tmp, "w", encoding="utf-8") as f:
                 f.write(json_out)
-            os.replace(json_tmp, "osm_changesets_summary.json")
-            json_size = os.path.getsize("osm_changesets_summary.json")
-            logger.info("Wrote JSON output: %s (%d bytes)", "osm_changesets_summary.json", json_size)
+            os.replace(str(json_tmp), str(json_path))
+            json_size = os.path.getsize(json_path)
+            logger.info("Wrote JSON output: %s (%d bytes) — rel: %s, abs: %s", json_path.name, json_size, json_path.as_posix(), str(json_path.resolve()))
+            logger.info("Wrote OUT_PATH: %s (rel: %s, abs: %s, bytes: %d)", OUT_PATH.name, OUT_PATH.as_posix(), str(OUT_PATH.resolve()), OUT_PATH.stat().st_size)
 
             # Also write a CSV with renamed columns for convenience (atomic write)
             df_csv = df_final.rename(columns={
@@ -268,11 +274,12 @@ def main():
                 'total_editor': 'apps',
                 'new_mappers': 'newcontributors'
             })
-            csv_tmp = "osm_changesets_summary.csv.tmp"
+            csv_path = Path("osm_changesets_summary.csv")
+            csv_tmp = csv_path.with_name(csv_path.name + ".tmp")
             df_csv.to_csv(csv_tmp, index=False)
-            os.replace(csv_tmp, "osm_changesets_summary.csv")
-            csv_size = os.path.getsize("osm_changesets_summary.csv")
-            logger.info("Wrote CSV output: %s (%d bytes)", "osm_changesets_summary.csv", csv_size)
+            os.replace(str(csv_tmp), str(csv_path))
+            csv_size = os.path.getsize(csv_path)
+            logger.info("Wrote CSV output: %s (%d bytes) — rel: %s, abs: %s", csv_path.name, csv_size, csv_path.as_posix(), str(csv_path.resolve()))
     except Exception:
         logger.exception("Unhandled error in main")
         sys.exit(1)

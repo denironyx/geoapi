@@ -44,7 +44,7 @@ jobs:
           con = duckdb.connect()
           con.register("changesets", dataset)
           print(con.execute("SELECT COUNT(*) FROM changesets").fetchone())
-          print("Wrote Syncing ORC -> DuckDB")
+          print("Wrote Syncing ORC -> DuckDB")         
           PY
 
       - name: Build yearly stats JSON
@@ -55,6 +55,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/osm_changesets_summary.json data/osm_stats.json
+          git add ../data/osm_changesets_summary.json ../data/osm_stats.json
           git commit -m "Update OSM yearly stats" || exit 0
           git push
