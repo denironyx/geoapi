@@ -1,0 +1,64 @@
+name: Build OSM yearly stats
+
+on:
+  schedule:
+    - cron: "0 6 1 * *"   # monthly: 06:00 UTC on the 1st
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install system deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y awscli
+
+      - name: Install Python deps
+        run: |
+          python -m pip install -U pip
+          python -m pip install duckdb pyarrow pandas
+
+      - name: Sync ORC from osm-pds
+        run: |
+          mkdir -p data/osm_changesets_orc
+          aws s3 sync --no-sign-request s3://osm-pds/changesets/ data/osm_changesets_orc
+
+      # Optional but strongly recommended for speed:
+      - name: Convert ORC -> Parquet (single file)
+        run: |
+          python - << 'PY'
+          import duckdb
+          con = duckdb.connect()
+          con.execute("INSTALL orc;")
+          con.execute("LOAD orc;")
+          con.execute("""
+            CREATE VIEW changesets AS
+            SELECT * FROM read_orc('data/osm_changesets_orc/**/*.orc', union_by_name=True);
+          """)
+          con.execute("COPY changesets TO 'data/changesets.parquet' (FORMAT PARQUET);")
+          print("Wrote data/changesets.parquet")
+          PY
+
+      - name: Build yearly stats JSON
+        run: |
+          python scripts/build_yearly_stats.py
+
+      - name: Commit outputs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add site/data/osm_yearly_stats_2004_2026.json data/changesets.parquet || true
+          git commit -m "Update OSM yearly stats" || exit 0
+          git push
