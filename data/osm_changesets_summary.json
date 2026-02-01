@@ -168,11 +168,11 @@
     "newcontributors": 156486
   },
   "2026": {
-    "changesets": 151843,
-    "contributors": 13170,
-    "mappedFeatures": 12719585,
+    "changesets": 1013559,
+    "contributors": 43595,
+    "mappedFeatures": 84226372,
     "countries": 0,
-    "apps": 87,
-    "newcontributors": 1454
+    "apps": 149,
+    "newcontributors": 11296
   }
 }
