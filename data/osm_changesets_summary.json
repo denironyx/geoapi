@@ -9,19 +9,19 @@
   },
   "2006": {
     "changesets": 16711,
-    "contributors": 1293,
+    "contributors": 1292,
     "mappedFeatures": 21841375,
     "countries": 0,
     "apps": 0,
-    "newcontributors": 1236
+    "newcontributors": 1235
   },
   "2007": {
     "changesets": 138149,
-    "contributors": 6933,
+    "contributors": 6935,
     "mappedFeatures": 204035318,
     "countries": 0,
     "apps": 0,
-    "newcontributors": 6058
+    "newcontributors": 6061
   },
   "2008": {
     "changesets": 505243,
@@ -168,11 +168,11 @@
     "newcontributors": 156486
   },
   "2026": {
-    "changesets": 7719985,
-    "contributors": 180991,
-    "mappedFeatures": 720522706,
+    "changesets": 9774208,
+    "contributors": 218032,
+    "mappedFeatures": 846776428,
     "countries": 0,
-    "apps": 519,
-    "newcontributors": 90671
+    "apps": 659,
+    "newcontributors": 117743
   }
 }
