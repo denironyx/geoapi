@@ -17,11 +17,11 @@
   },
   "2007": {
     "changesets": 138149,
-    "contributors": 6935,
+    "contributors": 6933,
     "mappedFeatures": 204035318,
     "countries": 0,
     "apps": 0,
-    "newcontributors": 6061
+    "newcontributors": 6058
   },
   "2008": {
     "changesets": 505243,
@@ -29,7 +29,7 @@
     "mappedFeatures": 236531686,
     "countries": 0,
     "apps": 0,
-    "newcontributors": 24834
+    "newcontributors": 24837
   },
   "2009": {
     "changesets": 2842898,
@@ -37,7 +37,7 @@
     "mappedFeatures": 604403817,
     "countries": 0,
     "apps": 233,
-    "newcontributors": 61363
+    "newcontributors": 61364
   },
   "2010": {
     "changesets": 3319360,
@@ -168,11 +168,11 @@
     "newcontributors": 156486
   },
   "2026": {
-    "changesets": 12631348,
-    "contributors": 277675,
-    "mappedFeatures": 1055909031,
+    "changesets": 14344108,
+    "contributors": 308939,
+    "mappedFeatures": 1203184659,
     "countries": 0,
-    "apps": 960,
-    "newcontributors": 163992
+    "apps": 1286,
+    "newcontributors": 188076
   }
 }
